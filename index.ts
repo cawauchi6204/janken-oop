@@ -41,6 +41,9 @@ class Player {
 	displayHand() {
 		return this._hand.name
 	}
+	public static randomHand() {
+		return new Player(1 + Math.floor(Math.random() * 3))
+	}
 }
 
 class Match {
@@ -50,17 +53,12 @@ class Match {
 		this._you = you
 		this._enemy = enemy
 	}
-	/*
-    じゃんけんをさせて勝敗を決めるプログラム
-    自分の手と相手の手をプロパティとして保持する
-    private printメソッド
-  */
+
 	public print() {
 		console.log(`あなたの手: ${this._you.displayHand()}`)
 		console.log(`相手の手: ${this._enemy.displayHand()}`)
 		console.log(`結果: ${this.judge()}`)
 	}
-
 	private judge(): string {
 		return this._you._hand.fight(this._enemy._hand)
 	}
@@ -71,8 +69,7 @@ async function main() {
 	for (;;) {
 		console.log('1.パーー\n2.チョキ\n3.グー')
 		const answer = await getInputNum('あなたの手を選択してください。>')
-		console.log(answer)
-		const match = new Match(new Player(Number(answer)), new Player(1))
+		const match = new Match(new Player(Number(answer)), Player.randomHand())
 		match.print()
 		if (typeof answer === 'string' && ['1', '2', '3'].includes(answer)) {
 			break
