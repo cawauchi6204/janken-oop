@@ -64,11 +64,10 @@ class Match {
 	}
 }
 
-/** メイン処理 */
 async function main() {
 	for (;;) {
 		console.log('1.パーー\n2.チョキ\n3.グー')
-		const answer = await getInputNum('あなたの手を選択してください。>')
+		const answer = await getInputNum()
 		const match = new Match(new Player(Number(answer)), Player.randomHand())
 		match.print()
 		if (typeof answer === 'string' && ['1', '2', '3'].includes(answer)) {
@@ -77,14 +76,12 @@ async function main() {
 	}
 }
 
-/** ユーザーにYes/Noで答えられる質問をする */
-async function getInputNum(msg: string): Promise<string | undefined> {
-	const answer = await question(`${msg}(y/n): `)
+async function getInputNum(): Promise<string | undefined> {
+	const answer = await question('あなたの手を選択してください。>')
 	if (typeof answer !== 'string') return
 	return answer.trim().toLowerCase()
 }
 
-/** 標準入力を取得する */
 const question = (question: string): Promise<unknown> => {
 	const readlineInterface = readline.createInterface({
 		input: process.stdin,
