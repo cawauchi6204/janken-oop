@@ -1,12 +1,28 @@
 import * as readline from 'readline'
 
+;(async () => {
+	await main()
+})()
+
+async function main() {
+	for (;;) {
+		console.log('1.パーー\n2.チョキ\n3.グー')
+		const answer = Number(await getInputNum())
+		const match = new Match(new Player(answer), Player.randomHand())
+		match.print()
+		if (typeof answer === 'number' && Hand.isHand(answer)) {
+			break
+		}
+	}
+}
+
 class Hand {
 	private readonly _value: number
 	private readonly _name: string
 
-	public static Paper = 1
-	public static Scissors = 2
-	public static Rock = 3
+	public static readonly Paper = 1
+	public static readonly Scissors = 2
+	public static readonly Rock = 3
 
 	public static hands: Hand[] = [
 		new Hand(Hand.Paper, '✋'),
@@ -21,6 +37,9 @@ class Hand {
 
 	public static fromValue(handValue: number): Hand {
 		return Hand.hands[handValue - 1]
+	}
+	public static isHand(handValue: number): boolean {
+		return this.hands.map((hand) => hand._value).includes(handValue)
 	}
 
 	public fight(enemyHand: Hand): string {
@@ -64,25 +83,13 @@ class Match {
 	}
 }
 
-async function main() {
-	for (;;) {
-		console.log('1.パーー\n2.チョキ\n3.グー')
-		const answer = await getInputNum()
-		const match = new Match(new Player(Number(answer)), Player.randomHand())
-		match.print()
-		if (typeof answer === 'string' && ['1', '2', '3'].includes(answer)) {
-			break
-		}
-	}
-}
-
 async function getInputNum(): Promise<string | undefined> {
 	const answer = await question('あなたの手を選択してください。>')
 	if (typeof answer !== 'string') return
 	return answer.trim().toLowerCase()
 }
 
-const question = (question: string): Promise<unknown> => {
+function question(question: string): Promise<unknown> {
 	const readlineInterface = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout,
@@ -94,7 +101,3 @@ const question = (question: string): Promise<unknown> => {
 		})
 	})
 }
-
-;(async () => {
-	await main()
-})()
