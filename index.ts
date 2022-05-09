@@ -6,7 +6,7 @@ import * as readline from 'readline'
 
 async function main() {
 	for (;;) {
-		console.log('1.パーー\n2.チョキ\n3.グー')
+		console.log('1.✋\n2.✌️\n3.👊')
 		const answer = Number(await getInputNum())
 		const match = new Match(new Player(answer), Player.randomHand())
 		match.print()
@@ -41,7 +41,6 @@ class Hand {
 	public static isHand(handValue: number): boolean {
 		return this.hands.map((hand) => hand._value).includes(handValue)
 	}
-
 	public fight(enemyHand: Hand): string {
 		if (this == enemyHand) return '引き分け'
 		if ((this._value + 1) % 3 === enemyHand._value) return 'あなたの負け'
