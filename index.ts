@@ -1,5 +1,4 @@
 import * as readline from 'readline'
-
 ;(async () => {
 	await main()
 })()
@@ -10,7 +9,7 @@ async function main() {
 		const answer = Number(await getInputNum())
 		const match = new Match(new Player(answer), Player.randomHand())
 		match.print()
-		if (typeof answer === 'number' && Hand.isHand(answer)) {
+		if (typeof answer === 'number') {
 			break
 		}
 	}
@@ -31,6 +30,8 @@ class Hand {
 	]
 
 	private constructor(handValue: number, handName: string) {
+		if (!Hand.isValidHandValue(handValue))
+			throw new Error('適切な入力値ではありません')
 		this._value = handValue
 		this._name = handName
 	}
@@ -38,7 +39,7 @@ class Hand {
 	public static fromValue(handValue: number): Hand {
 		return Hand.hands[handValue - 1]
 	}
-	public static isHand(handValue: number): boolean {
+	private static isValidHandValue(handValue: number): boolean {
 		return this.hands.map((hand) => hand._value).includes(handValue)
 	}
 	public fight(enemyHand: Hand): string {
